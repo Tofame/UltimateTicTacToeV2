@@ -29,7 +29,7 @@ public class MainMenuPanel extends BasicBackgroundPanel {
                 int height = textHeight;
 
                 // Draw background
-                g.setColor(Color.BLUE);
+                g.setColor(Color.GRAY);
                 g.fillRect(x, y, width, height);
 
                 super.paintComponent(g);
@@ -55,7 +55,7 @@ public class MainMenuPanel extends BasicBackgroundPanel {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(4, 1, 30, 0));
         buttonPanel.setOpaque(false);
-        buttonPanel.setBorder(new LineBorder(Color.CYAN, 7));
+        buttonPanel.setBorder(new LineBorder(Color.GRAY, 7));
         buttonPanel.setSize(new Dimension(500, 300));
         contentPanel.add(buttonPanel);
 

@@ -55,12 +55,12 @@ public class GameWindow extends JFrame {
         this.getContentPane().add(cardPanel);
 
         // Create Main Menu Panel
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("background.png");
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("background2.png");
         Image background = null;
         try {
             background = ImageIO.read(inputStream);
         } catch (IOException e) {
-            throw new RuntimeException("Couldn't find background.png in resources/");
+            throw new RuntimeException("Couldn't find background2.png in resources/");
         }
         cardPanel.add(new MainMenuPanel(background), "MainMenuPanel");
 
