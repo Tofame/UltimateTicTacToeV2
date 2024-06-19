@@ -23,12 +23,7 @@ public class GameWindow extends JFrame {
         return gameWindow_;
     }
 
-    private JPanel rootPanel;
     private JPanel cardPanel;
-
-    public JPanel getRootPanel() {
-        return this.rootPanel;
-    }
 
     public JPanel getCardPanel() {
         return this.cardPanel;
@@ -39,13 +34,6 @@ public class GameWindow extends JFrame {
         this.setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
         this.getContentPane().setLayout(new BorderLayout());
         this.getContentPane().setBackground(Color.BLACK);
-
-        // Root Panel that will hold everything
-//        this.rootPanel = new JPanel();
-//        rootPanel.setLayout(new GridBagLayout());
-//        rootPanel.setOpaque(false);
-//
-//        this.getContentPane().add(rootPanel, BorderLayout.CENTER);
 
         // Card Panel that allows for showing only 1 of its components at a time. This will be our scene manager
         this.cardPanel = new JPanel();
@@ -62,7 +50,15 @@ public class GameWindow extends JFrame {
         } catch (IOException e) {
             throw new RuntimeException("Couldn't find background2.png in resources/");
         }
-        cardPanel.add(new MainMenuPanel(background), "MainMenuPanel");
+
+        MainMenuPanel mainMenuPanel = new MainMenuPanel(background);
+        mainMenuPanel.putClientProperty(cardPanel, "cardPanel");
+        cardPanel.add(mainMenuPanel, "MainMenuPanel");
+
+        // Create Game Panel
+        GamePanel gamePanel = new GamePanel();
+        gamePanel.putClientProperty(cardPanel, "cardPanel");
+        cardPanel.add(gamePanel, "GamePanel");
 
         // Showing the window
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
