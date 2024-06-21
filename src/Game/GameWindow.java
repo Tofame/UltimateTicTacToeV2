@@ -52,12 +52,10 @@ public class GameWindow extends JFrame {
         }
 
         MainMenuPanel mainMenuPanel = new MainMenuPanel(background);
-        mainMenuPanel.putClientProperty("cardPanel", cardPanel);
         cardPanel.add(mainMenuPanel, "MainMenuPanel");
 
         // Create Game Panel
         GamePanel gamePanel = new GamePanel();
-        gamePanel.putClientProperty("cardPanel", cardPanel);
         cardPanel.add(gamePanel, "GamePanel");
 
         // Showing the window

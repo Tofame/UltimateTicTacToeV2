@@ -13,7 +13,7 @@ import java.beans.PropertyChangeSupport;
 
 public class GamePanel extends JPanel {
     public GamePanel() {
-        this.setLayout(new BorderLayout());
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setBackground(Color.BLACK);
 
         // Turn / Win / Tie Label
@@ -38,11 +38,10 @@ public class GamePanel extends JPanel {
             }
         };
 
-        stateGameLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        stateGameLabel.setAlignmentX(CENTER_ALIGNMENT);
         stateGameLabel.setFont(new Font("Arial", Font.BOLD, 40));
         stateGameLabel.setForeground(Color.WHITE);
         stateGameLabel.setPreferredSize(new Dimension(650, 60));
-        stateGameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         GameLogic.getInstance().addPropertyChangeListener(new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
@@ -55,49 +54,27 @@ public class GamePanel extends JPanel {
         this.add(stateGameLabel, BorderLayout.NORTH);
 
         // Content Panel
-//        JPanel contentPanel = new JPanel();
-//        contentPanel.setLayout(new GridBagLayout());
-//        contentPanel.setOpaque(false);
-//        this.add(contentPanel, BorderLayout.CENTER);
-//
-//        // Buttons panel
-//        JPanel buttonPanel = new JPanel();
-//        buttonPanel.setLayout(new GridLayout(4, 1, 30, 0));
-//        buttonPanel.setOpaque(false);
-//        buttonPanel.setBorder(new LineBorder(Color.BLACK, 7));
-//        buttonPanel.setSize(new Dimension(500, 300));
-//        contentPanel.add(buttonPanel);
+        JPanel contentPanel = new JPanel();
+        contentPanel.setLayout(new GridBagLayout());
+        //contentPanel.setOpaque(false);
+        contentPanel.setBackground(Color.yellow);
+        this.add(contentPanel, BorderLayout.CENTER);
 
-        // Setup buttons
-//        Dimension buttonSize = new Dimension(260, 40);
-//
-//        JButton pveButton = new JButton("Player vs AI");
-//        pveButton.setPreferredSize(buttonSize);
-//
-//        JButton pvpButton = new JButton("Player vs Player");
-//        pvpButton.setPreferredSize(buttonSize);
-//
-//        JButton loadGameButton = new JButton("Load Game");
-//        loadGameButton.setPreferredSize(buttonSize);
-//
-//        JButton exitButton = new JButton("Exit");
-//        exitButton.setPreferredSize(buttonSize);
-//
-//        pveButton.setFocusPainted(false);
-//        pvpButton.setFocusPainted(false);
-//        loadGameButton.setFocusPainted(false);
-//        exitButton.setFocusPainted(false);
-//
-//        buttonPanel.add(pveButton);
-//        buttonPanel.add(pvpButton);
-//        buttonPanel.add(loadGameButton);
-//        buttonPanel.add(exitButton);
 
-//        exitButton.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                System.exit(0);
-//            }
-//        });
+        // Quit Button
+        JButton quitButton = new JButton("Quit");
+        quitButton.setAlignmentX(CENTER_ALIGNMENT);
+
+        quitButton.setFocusPainted(false);
+        quitButton.setSize(new Dimension(200, 200));
+
+        this.add(quitButton);
+        quitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                GameLogic.getInstance().quitGame();
+            }
+        });
+        this.add(Box.createVerticalStrut(50));
     }
 }

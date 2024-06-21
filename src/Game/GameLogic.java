@@ -2,6 +2,8 @@ package Game;
 
 import GameUtils.Players;
 
+import javax.swing.*;
+import java.awt.*;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
@@ -31,12 +33,14 @@ public class GameLogic {
     };
 
     public void setTurn(Players turn) {
-        Players oldTurn = this.turn;
+        // We need this to be null, because if old = new, then property change event won't fire
+        Players oldTurn = null;
         this.turn = turn;
         this.support.firePropertyChange("onTurnChanged", oldTurn, this.turn);
     }
     public void nextTurn() {
-        Players oldTurn = this.turn;
+        // We need this to be null, because if old = new, then property change event won't fire
+        Players oldTurn = null;
         if(turn == Players.PLAYER_X) {
             turn = Players.PLAYER_O;
         } else {
@@ -69,8 +73,15 @@ public class GameLogic {
     }
 
     public void startGame(boolean AIMode) {
+        JPanel cardPanel = GameWindow.getInstance().getCardPanel();
+        ((CardLayout)cardPanel.getLayout()).show(cardPanel, "GamePanel");
         enableAIMode(AIMode);
         setTurn(Players.PLAYER_X);
+    }
+
+    public void quitGame() {
+        JPanel cardPanel = GameWindow.getInstance().getCardPanel();
+        ((CardLayout)cardPanel.getLayout()).show(cardPanel, "MainMenuPanel");
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener)  {
