@@ -39,20 +39,16 @@ public class GamePanel extends JPanel {
         };
 
         stateGameLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        stateGameLabel.setFont(new Font("Arial", Font.BOLD, 54));
+        stateGameLabel.setFont(new Font("Arial", Font.BOLD, 40));
         stateGameLabel.setForeground(Color.WHITE);
         stateGameLabel.setPreferredSize(new Dimension(650, 60));
         stateGameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        stateGameLabel.revalidate();
-        stateGameLabel.repaint();
         GameLogic.getInstance().addPropertyChangeListener(new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
-                System.out.println("bbibibi");
-                if ("turn".equals(evt.getPropertyName())) {
-                    stateGameLabel.setText(GameLogic.getInstance().getTurnInfo());
-                    System.out.println(">>" + GameLogic.getInstance().getTurnInfo());
-                    stateGameLabel.repaint();
+                if ("onTurnChanged".equals(evt.getPropertyName())) {
+                    String turnInfo = GameLogic.getInstance().getTurnInfo();
+                    stateGameLabel.setText(turnInfo);
                 }
             }
         });

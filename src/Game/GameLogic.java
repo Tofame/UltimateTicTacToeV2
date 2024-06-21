@@ -23,18 +23,17 @@ public class GameLogic {
     private PropertyChangeSupport support;
 
     private GameLogic() {
-        this.turn = Players.PLAYER_X;
         this.support = new PropertyChangeSupport(this);
     }
 
     public Players getTurn() {
-      return turn;
+        return turn;
     };
+
     public void setTurn(Players turn) {
         Players oldTurn = this.turn;
         this.turn = turn;
-        System.out.println("debug - setTurn");
-        support.firePropertyChange("turn", oldTurn, this.turn);
+        this.support.firePropertyChange("onTurnChanged", oldTurn, this.turn);
     }
     public void nextTurn() {
         Players oldTurn = this.turn;
@@ -43,7 +42,7 @@ public class GameLogic {
         } else {
             turn = Players.PLAYER_X;
         }
-        support.firePropertyChange("turn", oldTurn, this.turn);
+        this.support.firePropertyChange("onTurnChanged", oldTurn, this.turn);
     }
 
     public String getTurnInfo() {
@@ -74,12 +73,11 @@ public class GameLogic {
         setTurn(Players.PLAYER_X);
     }
 
-    public void addPropertyChangeListener(PropertyChangeListener pcl)  {
-        System.out.println("added");
-        support.addPropertyChangeListener(pcl);
+    public void addPropertyChangeListener(PropertyChangeListener listener)  {
+        support.addPropertyChangeListener(listener);
     }
 
-    public void removePropertyChangeListener(PropertyChangeListener pcl) {
-        support.removePropertyChangeListener(pcl);
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        support.removePropertyChangeListener(listener);
     }
 }

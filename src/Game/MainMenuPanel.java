@@ -1,5 +1,6 @@
 package Game;
 
+import GameUtils.Players;
 import Utils.BasicBackgroundPanel;
 
 import javax.swing.*;
