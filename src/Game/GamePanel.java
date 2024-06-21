@@ -38,25 +38,25 @@ public class GamePanel extends JPanel {
             }
         };
 
-        // Add property change listener to update label text
-        GameLogic gameLogic = GameLogic.getInstance();
-        gameLogic.addPropertyChangeListener(new PropertyChangeListener() {
+        stateGameLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        stateGameLabel.setFont(new Font("Arial", Font.BOLD, 54));
+        stateGameLabel.setForeground(Color.WHITE);
+        stateGameLabel.setPreferredSize(new Dimension(650, 60));
+        stateGameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        stateGameLabel.revalidate();
+        stateGameLabel.repaint();
+        GameLogic.getInstance().addPropertyChangeListener(new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
+                System.out.println("bbibibi");
                 if ("turn".equals(evt.getPropertyName())) {
-                    stateGameLabel.setText(gameLogic.getTurnInfo());
+                    stateGameLabel.setText(GameLogic.getInstance().getTurnInfo());
+                    System.out.println(">>" + GameLogic.getInstance().getTurnInfo());
                     stateGameLabel.repaint();
                 }
             }
         });
-//        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
-//        titleLabel.setFont(new Font("Arial", Font.BOLD, 54));
-//        titleLabel.setForeground(Color.WHITE);
-//        titleLabel.setPreferredSize(new Dimension(650, 60));
-//        titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-//        titleLabel.revalidate();
-//        titleLabel.repaint();
-//        this.add(titleLabel, BorderLayout.NORTH);
+        this.add(stateGameLabel, BorderLayout.NORTH);
 
         // Content Panel
 //        JPanel contentPanel = new JPanel();

@@ -87,14 +87,18 @@ public class MainMenuPanel extends BasicBackgroundPanel {
         pveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                JPanel cardPanel = (JPanel)getClientProperty("cardPanel");
+                ((CardLayout)cardPanel.getLayout()).show(cardPanel, "GamePanel");
+                GameLogic.getInstance().startGame(true);
             }
         });
 
         pvpButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                JPanel cardPanel = (JPanel)getClientProperty("cardPanel");
+                ((CardLayout)cardPanel.getLayout()).show(cardPanel, "GamePanel");
+                GameLogic.getInstance().startGame(false);
             }
         });
 

@@ -33,6 +33,7 @@ public class GameLogic {
     public void setTurn(Players turn) {
         Players oldTurn = this.turn;
         this.turn = turn;
+        System.out.println("debug - setTurn");
         support.firePropertyChange("turn", oldTurn, this.turn);
     }
     public void nextTurn() {
@@ -68,7 +69,13 @@ public class GameLogic {
         this.isAIMode = value;
     }
 
-    public void addPropertyChangeListener(PropertyChangeListener pcl) {
+    public void startGame(boolean AIMode) {
+        enableAIMode(AIMode);
+        setTurn(Players.PLAYER_X);
+    }
+
+    public void addPropertyChangeListener(PropertyChangeListener pcl)  {
+        System.out.println("added");
         support.addPropertyChangeListener(pcl);
     }
 
