@@ -1,12 +1,9 @@
 package Game;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.io.IOException;
-import java.io.InputStream;
 
 public class GameWindow extends JFrame {
     private static final int DEFAULT_WIDTH = 840;
@@ -50,22 +47,22 @@ public class GameWindow extends JFrame {
         GamePanel gamePanel = new GamePanel();
         cardPanel.add(gamePanel, "GamePanel");
 
-        // Resizing
-        this.addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent e) {
-                System.out.println("W: " + getWidth() + " H: " + getHeight());
-                int minSize = (int) Math.min(250, Math.min(getWidth(), getHeight()));
-                mainMenuPanel.setPreferredSize(new Dimension(minSize, minSize));
-                gamePanel.setPreferredSize(new Dimension(minSize, minSize));
-
-                mainMenuPanel.revalidate();
-                mainMenuPanel.repaint();
-
-                cardPanel.revalidate();
-                cardPanel.repaint();
-            }
-        });
+        // Resizing, doesn't work.
+//        this.addComponentListener(new ComponentAdapter() {
+//            @Override
+//            public void componentResized(ComponentEvent e) {
+//                System.out.println("W: " + getWidth() + " H: " + getHeight());
+//                int minSize = (int) Math.min(250, Math.min(getWidth(), getHeight()));
+//                mainMenuPanel.setPreferredSize(new Dimension(minSize, minSize));
+//                gamePanel.setPreferredSize(new Dimension(minSize, minSize));
+//
+//                mainMenuPanel.revalidate();
+//                mainMenuPanel.repaint();
+//
+//                cardPanel.revalidate();
+//                cardPanel.repaint();
+//            }
+//        });
 
         // Showing the window
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

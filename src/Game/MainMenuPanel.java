@@ -113,18 +113,4 @@ public class MainMenuPanel extends BasicBackgroundPanel {
             }
         });
     }
-
-    @Override
-    public Dimension getPreferredSize() {
-        System.out.println("bebe");
-        // Return a preferred size based on some logic or default values
-        return new Dimension(5555, 5555);
-    }
-
-    @Override
-    public Dimension getSize() {
-        System.out.println("hehe");
-        // Return a preferred size based on some logic or default values
-        return new Dimension(5555, 5555);
-    }
 }
