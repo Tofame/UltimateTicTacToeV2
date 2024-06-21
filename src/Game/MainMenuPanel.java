@@ -10,10 +10,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class MainMenuPanel extends BasicBackgroundPanel {
-    public MainMenuPanel(Image background) {
-        super(background);
+    public MainMenuPanel(String imagePath) {
+        super(imagePath);
         this.setLayout(new BorderLayout());
-        this.setBackground(Color.BLACK);
+        this.setBackground(Color.GRAY);
 
         // Game Title
         JLabel titleLabel = new JLabel() {
@@ -112,5 +112,19 @@ public class MainMenuPanel extends BasicBackgroundPanel {
                 System.exit(0);
             }
         });
+    }
+
+    @Override
+    public Dimension getPreferredSize() {
+        System.out.println("bebe");
+        // Return a preferred size based on some logic or default values
+        return new Dimension(5555, 5555);
+    }
+
+    @Override
+    public Dimension getSize() {
+        System.out.println("hehe");
+        // Return a preferred size based on some logic or default values
+        return new Dimension(5555, 5555);
     }
 }

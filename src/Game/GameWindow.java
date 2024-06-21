@@ -33,7 +33,7 @@ public class GameWindow extends JFrame {
         super(DEFAULT_TITLE);
         this.setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
         this.getContentPane().setLayout(new BorderLayout());
-        this.getContentPane().setBackground(Color.BLACK);
+        this.getContentPane().setBackground(Color.GRAY);
 
         // Card Panel that allows for showing only 1 of its components at a time. This will be our scene manager
         this.cardPanel = new JPanel();
@@ -43,20 +43,29 @@ public class GameWindow extends JFrame {
         this.getContentPane().add(cardPanel);
 
         // Create Main Menu Panel
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("background2.png");
-        Image background = null;
-        try {
-            background = ImageIO.read(inputStream);
-        } catch (IOException e) {
-            throw new RuntimeException("Couldn't find background2.png in resources/");
-        }
-
-        MainMenuPanel mainMenuPanel = new MainMenuPanel(background);
+        MainMenuPanel mainMenuPanel = new MainMenuPanel("background.png");
         cardPanel.add(mainMenuPanel, "MainMenuPanel");
 
         // Create Game Panel
         GamePanel gamePanel = new GamePanel();
         cardPanel.add(gamePanel, "GamePanel");
+
+        // Resizing
+        this.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                System.out.println("W: " + getWidth() + " H: " + getHeight());
+                int minSize = (int) Math.min(250, Math.min(getWidth(), getHeight()));
+                mainMenuPanel.setPreferredSize(new Dimension(minSize, minSize));
+                gamePanel.setPreferredSize(new Dimension(minSize, minSize));
+
+                mainMenuPanel.revalidate();
+                mainMenuPanel.repaint();
+
+                cardPanel.revalidate();
+                cardPanel.repaint();
+            }
+        });
 
         // Showing the window
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

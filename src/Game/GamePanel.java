@@ -1,20 +1,20 @@
 package Game;
 
-import GameUtils.Players;
+import Utils.BasicBackgroundPanel;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 
-public class GamePanel extends JPanel {
+public class GamePanel extends BasicBackgroundPanel {
     public GamePanel() {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        this.setBackground(Color.BLACK);
+        this.setBackground(new Color(39,39,39));
+
+        this.setBackgroundImage("BG_3.png");
 
         // Turn / Win / Tie Label
         JLabel stateGameLabel = new JLabel() {
@@ -45,9 +45,8 @@ public class GamePanel extends JPanel {
         GameLogic.getInstance().addPropertyChangeListener(new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
-                if ("onTurnChanged".equals(evt.getPropertyName())) {
-                    String turnInfo = GameLogic.getInstance().getTurnInfo();
-                    stateGameLabel.setText(turnInfo);
+                if ("gameInfoChanged".equals(evt.getPropertyName())) {
+                    stateGameLabel.setText(GameLogic.getInstance().getGameInfo());
                 }
             }
         });
@@ -56,8 +55,7 @@ public class GamePanel extends JPanel {
         // Content Panel
         JPanel contentPanel = new JPanel();
         contentPanel.setLayout(new GridBagLayout());
-        //contentPanel.setOpaque(false);
-        contentPanel.setBackground(Color.yellow);
+        contentPanel.setOpaque(false);
         this.add(contentPanel, BorderLayout.CENTER);
 
 

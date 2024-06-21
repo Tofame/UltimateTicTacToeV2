@@ -1,5 +1,6 @@
 package Game;
 
+import GameUtils.GameState;
 import GameUtils.Players;
 
 import javax.swing.*;
@@ -24,6 +25,8 @@ public class GameLogic {
     private boolean isAIMode;
     private PropertyChangeSupport support;
 
+    private GameState gameState = GameState.DEFAULT;
+
     private GameLogic() {
         this.support = new PropertyChangeSupport(this);
     }
@@ -33,20 +36,20 @@ public class GameLogic {
     };
 
     public void setTurn(Players turn) {
-        // We need this to be null, because if old = new, then property change event won't fire
-        Players oldTurn = null;
+        Players oldTurn = this.turn;
         this.turn = turn;
-        this.support.firePropertyChange("onTurnChanged", oldTurn, this.turn);
+        // We put null oldValue as we sometimes need to trigger gameInfoChanged even when old=new
+        this.support.firePropertyChange("gameInfoChanged", null, this.turn);
     }
     public void nextTurn() {
-        // We need this to be null, because if old = new, then property change event won't fire
-        Players oldTurn = null;
+        Players oldTurn = this.turn;
         if(turn == Players.PLAYER_X) {
             turn = Players.PLAYER_O;
         } else {
             turn = Players.PLAYER_X;
         }
-        this.support.firePropertyChange("onTurnChanged", oldTurn, this.turn);
+        // We put null oldValue as we sometimes need to trigger gameInfoChanged even when old=new
+        this.support.firePropertyChange("gameInfoChanged", null, this.turn);
     }
 
     public String getTurnInfo() {
@@ -63,6 +66,28 @@ public class GameLogic {
         }
 
         return result;
+    }
+
+    public String getGameInfo() {
+        switch (gameState) {
+            case DEFAULT:
+                return getTurnInfo();
+            case TIE:
+                return "Draaaw!";
+            case X_WIN:
+                return "X Wins!";
+            case O_WIN:
+                return "O Wins!";
+            default:
+                return getTurnInfo();
+        }
+    }
+
+    public void setGameState(GameState state) {
+        this.gameState = state;
+    }
+    public GameState getGameState() {
+        return this.gameState;
     }
 
     public boolean isAIModeEnabled() {
