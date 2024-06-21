@@ -1,5 +1,7 @@
 package Game;
 
+import GameBoard.Board;
+import GameBoard.BoardButton;
 import GameUtils.GameState;
 import GameUtils.Players;
 
@@ -57,12 +59,12 @@ public class GameLogic {
 
         if (isAIModeEnabled()) {
             if (turn == Players.PLAYER_X) {
-                result = " Your turn";
+                result = "your turn";
             } else {
-                result = " AI's turn";
+                result = "AI's turn";
             }
         } else {
-            result = " turn";
+            result = "turn";
         }
 
         return result;
@@ -75,11 +77,29 @@ public class GameLogic {
             case TIE:
                 return "Draaaw!";
             case X_WIN:
-                return "X Wins!";
+                return "wins!";
             case O_WIN:
-                return "O Wins!";
+                return "wins!";
             default:
                 return getTurnInfo();
+        }
+    }
+
+    public ImageIcon getInfoIcon() {
+        switch (gameState) {
+            case TIE:
+                return null;
+            case X_WIN:
+                return new ImageIcon(BoardButton.imageMarkX);
+            case O_WIN:
+                return new ImageIcon(BoardButton.imageMarkO);
+            default:
+            case DEFAULT:
+                if(getTurn() == Players.PLAYER_X) {
+                    return new ImageIcon(BoardButton.imageMarkX);
+                } else {
+                    return new ImageIcon(BoardButton.imageMarkO);
+                }
         }
     }
 
@@ -115,5 +135,9 @@ public class GameLogic {
 
     public void removePropertyChangeListener(PropertyChangeListener listener) {
         support.removePropertyChangeListener(listener);
+    }
+
+    public void onBoardClicked(Board board, BoardButton button) {
+
     }
 }

@@ -1,5 +1,6 @@
 package Game;
 
+import GameBoard.BoardPanel;
 import Utils.BasicBackgroundPanel;
 
 import javax.swing.*;
@@ -14,7 +15,7 @@ public class GamePanel extends BasicBackgroundPanel {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setBackground(new Color(39,39,39));
 
-        this.setBackgroundImage("BG_3.png");
+        this.setBackgroundImage("BG_1.png");
 
         // Turn / Win / Tie Label
         JLabel stateGameLabel = new JLabel() {
@@ -27,7 +28,7 @@ public class GamePanel extends BasicBackgroundPanel {
 
                 int x = (getWidth() - textWidth) / 2 - 20;
                 int y = (getHeight() - textHeight) / 2;
-                int width = textWidth + 40;
+                int width = textWidth + 80;
                 int height = textHeight;
 
                 // Draw background
@@ -47,6 +48,9 @@ public class GamePanel extends BasicBackgroundPanel {
             public void propertyChange(PropertyChangeEvent evt) {
                 if ("gameInfoChanged".equals(evt.getPropertyName())) {
                     stateGameLabel.setText(GameLogic.getInstance().getGameInfo());
+
+                    ImageIcon icon = GameLogic.getInstance().getInfoIcon();
+                    stateGameLabel.setIcon(icon);
                 }
             }
         });
@@ -58,6 +62,7 @@ public class GamePanel extends BasicBackgroundPanel {
         contentPanel.setOpaque(false);
         this.add(contentPanel, BorderLayout.CENTER);
 
+        contentPanel.add(BoardPanel.getInstance());
 
         // Quit Button
         JButton quitButton = new JButton("Quit");
