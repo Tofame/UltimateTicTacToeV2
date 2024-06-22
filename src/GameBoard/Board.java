@@ -94,6 +94,8 @@ public class Board extends JPanel {
     }
 
     public void onBoardWin(BoardMarks winningMark) {
+        this.setBackground(Color.BLACK);
+
         this.setCompleted(true);
         this.buttonsPanel.setVisible(false);
         this.buttonsPanel.removeAll();
