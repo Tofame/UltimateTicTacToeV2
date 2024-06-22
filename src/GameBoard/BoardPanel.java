@@ -1,5 +1,8 @@
 package GameBoard;
 
+import Game.GameLogic;
+import GameUtils.BoardMarks;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -43,5 +46,52 @@ public class BoardPanel extends JPanel {
 
         g.setColor(Color.CYAN); // Color of board panel lines (between boards)
         g.fillRect(offsetX, offsetY, squareSize, squareSize);
+    }
+
+    // If MainBoard is
+    public boolean validateMainBoard(int boardWonPos) {
+        // Check rows
+        int row = boardWonPos / 3;
+        boolean rowWin = true;
+        for (int col = 0; col < 3; col++) {
+            if (((Board)this.getComponent(row * 3 + col)).isCompleted() == false) {
+                rowWin = false;
+                break;
+            }
+        }
+        if (rowWin) {
+            return true;
+        }
+
+        // Check columns
+        int col = boardWonPos % 3;
+        boolean colWin = true;
+        for (int r = 0; r < 3; r++) {
+            if (((Board)this.getComponent(r * 3 + col)).isCompleted() == false) {
+                colWin = false;
+                break;
+            }
+        }
+        if (colWin) {
+            return true;
+        }
+
+        // Check 1st diagonal (top left -> bottom right)
+        if  (((Board)this.getComponent(0)).isCompleted() &&
+            (((Board)this.getComponent(4)).isCompleted() &&
+            ((Board)this.getComponent(8)).isCompleted()))
+        {
+            return true;
+        }
+
+        // Check 2nd diagonal (bottom left -> top right)
+        if  (((Board)this.getComponent(6)).isCompleted() &&
+            (((Board)this.getComponent(4)).isCompleted() &&
+            ((Board)this.getComponent(2)).isCompleted()))
+        {
+            return true;
+        }
+
+        return false;
     }
 }

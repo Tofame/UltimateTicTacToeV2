@@ -63,11 +63,10 @@ public class BoardButton extends JButton {
             @Override
             public void mousePressed(MouseEvent event) {
                 if(BoardButton.this.mark != BoardMarks.MARK_EMPTY) return;
-                Board parent = (Board)BoardButton.this.getClientProperty("parent");
-                if(parent != null && parent.isCompleted()) return;
+                if(BoardButton.this.parent.isCompleted()) return;
 
                 this.mouseExited(event);
-                GameLogic.getInstance().onBoardClicked(parent,BoardButton.this);
+                BoardButton.this.parent.onBoardClicked(BoardButton.this);
             }
         });
     }
@@ -110,9 +109,9 @@ public class BoardButton extends JButton {
         BoardMarks mark = BoardButton.this.getMark();
         if(mark != BoardMarks.MARK_EMPTY) {
             if(mark == BoardMarks.MARK_O)
-                g.drawImage(BoardButton.imageMarkX, 0, 0, getWidth(), getHeight(), this);
-            else
                 g.drawImage(BoardButton.imageMarkO, 0, 0, getWidth(), getHeight(), this);
+            else
+                g.drawImage(BoardButton.imageMarkX, 0, 0, getWidth(), getHeight(), this);
         } else {
             // When it is hovered draw semitransparent marks
             if(BoardButton.this.isHovered) {

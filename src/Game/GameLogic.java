@@ -2,6 +2,7 @@ package Game;
 
 import GameBoard.Board;
 import GameBoard.BoardButton;
+import GameUtils.BoardMarks;
 import GameUtils.GameState;
 import GameUtils.Players;
 
@@ -36,6 +37,14 @@ public class GameLogic {
     public Players getTurn() {
         return turn;
     };
+
+    public BoardMarks getTurnMark() {
+        if(getTurn() == Players.PLAYER_X) {
+            return BoardMarks.MARK_X;
+        }
+
+        return BoardMarks.MARK_O;
+    }
 
     public void setTurn(Players turn) {
         Players oldTurn = this.turn;
@@ -135,9 +144,5 @@ public class GameLogic {
 
     public void removePropertyChangeListener(PropertyChangeListener listener) {
         support.removePropertyChangeListener(listener);
-    }
-
-    public void onBoardClicked(Board board, BoardButton button) {
-
     }
 }
