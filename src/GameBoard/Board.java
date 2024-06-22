@@ -13,10 +13,12 @@ public class Board extends JPanel {
     private boolean completed;
     private int position;
 
+    private BoardMarks mark;
     private JPanel buttonsPanel;
 
     public Board() {
         this.completed = false;
+        this.mark = BoardMarks.MARK_EMPTY;
 
         this.setLayout(new BorderLayout());
         this.setOpaque(true);
@@ -68,12 +70,20 @@ public class Board extends JPanel {
         this.position = position;
     }
 
-    public void setMarkOnPosition(int position, BoardMarks mark) {
+    public void setButtonMarkOnPosition(int position, BoardMarks mark) {
         ((BoardButton)this.buttonsPanel.getComponent(position)).setMark(mark);
     }
 
-    public BoardMarks getMarkFromPosition(int position) {
+    public BoardMarks getButtonMarkFromPosition(int position) {
         return ((BoardButton)this.buttonsPanel.getComponent(position)).getMark();
+    }
+
+    public BoardMarks getMark() {
+        return mark;
+    }
+
+    public void setMark(BoardMarks mark) {
+        this.mark = mark;
     }
 
     public void onBoardClicked(BoardButton button) {
@@ -87,7 +97,7 @@ public class Board extends JPanel {
         boolean gameWin = false;
         if(boardWin) {
             onBoardWin(mark);
-            gameWin = BoardPanel.getInstance().validateMainBoard(this.getPosition());
+            gameWin = BoardPanel.getInstance().validateMainBoard(this.getPosition(), mark);
 
             if(gameWin) {
                 GameLogic.getInstance().onGameWin(mark);
@@ -102,7 +112,9 @@ public class Board extends JPanel {
     public void onBoardWin(BoardMarks winningMark) {
         this.setBackground(Color.BLACK);
 
+        this.setMark(winningMark);
         this.setCompleted(true);
+
         this.buttonsPanel.setVisible(false);
         this.buttonsPanel.removeAll();
 
@@ -147,7 +159,7 @@ public class Board extends JPanel {
         int row = buttonPos / 3;
         for (int col = 0; col < 3; col++) {
             // row * 3 <- (3 is amount of columns) gives us the 1st element of row, we add + col and we get correct index
-            if (getMarkFromPosition(row * 3 + col) != mark) {
+            if (getButtonMarkFromPosition(row * 3 + col) != mark) {
                 return false;
             }
         }
@@ -160,7 +172,7 @@ public class Board extends JPanel {
     private boolean validateColumn(int buttonPos, BoardMarks mark) {
         int col = buttonPos % 3; // e.g. pos = 4, 1 and 7 have the same result and give the same column, same for others
         for (int row = 0; row < 3; row++) {
-            if (getMarkFromPosition(row * 3 + col) != mark) {
+            if (getButtonMarkFromPosition(row * 3 + col) != mark) {
                 return false;
             }
         }
@@ -172,17 +184,17 @@ public class Board extends JPanel {
     // 6 7 8
     private boolean validateDiagonal(int buttonPos, BoardMarks mark) {
         // Check 1st (top left -> bottom right)
-        if (getMarkFromPosition(0) == mark &&
-            getMarkFromPosition(4) == mark &&
-            getMarkFromPosition(8) == mark)
+        if (getButtonMarkFromPosition(0) == mark &&
+            getButtonMarkFromPosition(4) == mark &&
+            getButtonMarkFromPosition(8) == mark)
         {
             return true;
         }
 
         // Check 2nd (bottom left -> top right)
-        if (getMarkFromPosition(2) == mark &&
-            getMarkFromPosition(4) == mark &&
-            getMarkFromPosition(6) == mark)
+        if (getButtonMarkFromPosition(2) == mark &&
+            getButtonMarkFromPosition(4) == mark &&
+            getButtonMarkFromPosition(6) == mark)
         {
             return true;
         }

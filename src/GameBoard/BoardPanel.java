@@ -31,11 +31,25 @@ public class BoardPanel extends JPanel {
         }
     }
 
-    public void completeAll() {
+    public ArrayList<Board> getBoards() {
+        ArrayList<Board> tempBoardArray = new ArrayList<>(9);
+
         for(Component c : this.getComponents()) {
             if(c instanceof Board) {
-                ((Board)c).setCompleted(true);
+                tempBoardArray.add((Board)c);
             }
+        }
+
+        return tempBoardArray;
+    }
+
+    public Board getBoard(int position) {
+        return (Board)this.getComponent(position);
+    }
+
+    public void completeAll() {
+        for(Board board : this.getBoards()) {
+            board.setCompleted(true);
         }
     }
 
@@ -57,12 +71,12 @@ public class BoardPanel extends JPanel {
     }
 
     // If MainBoard is
-    public boolean validateMainBoard(int boardWonPos) {
+    public boolean validateMainBoard(int boardWonPos, BoardMarks wonBoardMark) {
         // Check rows
         int row = boardWonPos / 3;
         boolean rowWin = true;
         for (int col = 0; col < 3; col++) {
-            if (((Board)this.getComponent(row * 3 + col)).isCompleted() == false) {
+            if (getBoard(row * 3 + col).getMark() == wonBoardMark) {
                 rowWin = false;
                 break;
             }
@@ -75,7 +89,7 @@ public class BoardPanel extends JPanel {
         int col = boardWonPos % 3;
         boolean colWin = true;
         for (int r = 0; r < 3; r++) {
-            if (((Board)this.getComponent(r * 3 + col)).isCompleted() == false) {
+            if (getBoard(r * 3 + col).getMark() == wonBoardMark) {
                 colWin = false;
                 break;
             }
@@ -85,17 +99,17 @@ public class BoardPanel extends JPanel {
         }
 
         // Check 1st diagonal (top left -> bottom right)
-        if  (((Board)this.getComponent(0)).isCompleted() &&
-            (((Board)this.getComponent(4)).isCompleted() &&
-            ((Board)this.getComponent(8)).isCompleted()))
+        if  ((getBoard(0).getMark() == wonBoardMark) &&
+            (getBoard(4).getMark() == wonBoardMark) &&
+            (getBoard(8).getMark() == wonBoardMark))
         {
             return true;
         }
 
         // Check 2nd diagonal (bottom left -> top right)
-        if  (((Board)this.getComponent(6)).isCompleted() &&
-            (((Board)this.getComponent(4)).isCompleted() &&
-            ((Board)this.getComponent(2)).isCompleted()))
+        if  ((getBoard(6).getMark() == wonBoardMark) &&
+            (getBoard(4).getMark() == wonBoardMark) &&
+            (getBoard(2).getMark() == wonBoardMark))
         {
             return true;
         }
