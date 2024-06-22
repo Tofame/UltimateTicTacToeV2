@@ -31,6 +31,14 @@ public class BoardPanel extends JPanel {
         }
     }
 
+    public void completeAll() {
+        for(Component c : this.getComponents()) {
+            if(c instanceof Board) {
+                ((Board)c).setCompleted(true);
+            }
+        }
+    }
+
     // Solely to prevent an issue where there would be thin border-lines
     // If BoardPanel had non-black background and there was resizing done.
     @Override

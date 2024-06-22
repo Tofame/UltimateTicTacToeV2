@@ -84,12 +84,18 @@ public class Board extends JPanel {
         button.setMark(mark);
 
         boolean boardWin = validateBoard(buttonPos, mark);
+        boolean gameWin = false;
         if(boardWin) {
             onBoardWin(mark);
-            boolean gameWin = BoardPanel.getInstance().validateMainBoard(this.getPosition());
+            gameWin = BoardPanel.getInstance().validateMainBoard(this.getPosition());
+
             if(gameWin) {
-                //GameLogic.getInstance().onGameWin(mark);
+                GameLogic.getInstance().onGameWin(mark);
             }
+        }
+
+        if(!gameWin) {
+            GameLogic.getInstance().nextTurn();
         }
     }
 

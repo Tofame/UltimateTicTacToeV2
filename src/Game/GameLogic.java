@@ -2,6 +2,7 @@ package Game;
 
 import GameBoard.Board;
 import GameBoard.BoardButton;
+import GameBoard.BoardPanel;
 import GameUtils.BoardMarks;
 import GameUtils.GameState;
 import GameUtils.Players;
@@ -24,11 +25,11 @@ public class GameLogic {
     }
 
     // Variables
+    private GameState gameState = GameState.DEFAULT;
+
     private Players turn;
     private boolean isAIMode;
     private PropertyChangeSupport support;
-
-    private GameState gameState = GameState.DEFAULT;
 
     private GameLogic() {
         this.support = new PropertyChangeSupport(this);
@@ -129,6 +130,8 @@ public class GameLogic {
     public void startGame(boolean AIMode) {
         JPanel cardPanel = GameWindow.getInstance().getCardPanel();
         ((CardLayout)cardPanel.getLayout()).show(cardPanel, "GamePanel");
+        setGameState(GameState.DEFAULT);
+
         enableAIMode(AIMode);
         setTurn(Players.PLAYER_X);
     }
@@ -136,6 +139,16 @@ public class GameLogic {
     public void quitGame() {
         JPanel cardPanel = GameWindow.getInstance().getCardPanel();
         ((CardLayout)cardPanel.getLayout()).show(cardPanel, "MainMenuPanel");
+    }
+
+    public void onGameWin(BoardMarks winnerMark) {
+        if(winnerMark == BoardMarks.MARK_X)
+            this.setGameState(GameState.X_WIN);
+        else
+            this.setGameState(GameState.O_WIN);
+
+        this.support.firePropertyChange("gameInfoChanged", null, this.turn);
+        BoardPanel.getInstance().completeAll();
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener)  {
