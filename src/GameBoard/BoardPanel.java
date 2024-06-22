@@ -41,7 +41,7 @@ public class BoardPanel extends JPanel {
         int offsetX = (panelWidth - squareSize) / 2;
         int offsetY = (panelHeight - squareSize) / 2;
 
-        g.setColor(Color.BLUE); // Color of board panel lines (between boards)
+        g.setColor(Color.CYAN); // Color of board panel lines (between boards)
         g.fillRect(offsetX, offsetY, squareSize, squareSize);
     }
 }

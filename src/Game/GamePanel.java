@@ -15,7 +15,7 @@ public class GamePanel extends BasicBackgroundPanel {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setBackground(new Color(39,39,39));
 
-        this.setBackgroundImage("BG_1.png");
+        this.setBackgroundImage("background2.png");
 
         // Turn / Win / Tie Label
         JLabel stateGameLabel = new JLabel() {

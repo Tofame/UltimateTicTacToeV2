@@ -2,6 +2,7 @@ package GameBoard;
 
 import Game.GameLogic;
 import GameUtils.BoardMarks;
+import GameUtils.Players;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -17,10 +18,15 @@ public class BoardButton extends JButton {
     public static Image imageMarkX = null;
     public static Image imageMarkO = null;
 
+    private Board parent;
+
     private BoardMarks mark = BoardMarks.MARK_EMPTY;
     private int position;
+    private boolean isHovered = false;
 
-    public BoardButton() {
+    public BoardButton(Board parent) {
+        this.parent = parent;
+
         // Disable the 'pressed' state <- how the button looks when its clicked
         setUI(new BasicButtonUI() {
             @Override
@@ -40,22 +46,23 @@ public class BoardButton extends JButton {
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent event) {
-                Board parent = (Board)BoardButton.this.getClientProperty("parent");
-                if(parent != null && parent.isCompleted()) return;
+                if(BoardButton.this.mark != BoardMarks.MARK_EMPTY) return;
+                if(BoardButton.this.parent.isCompleted()) return;
 
-                BoardButton.this.setBorder(new LineBorder(Color.YELLOW, 3));
+                BoardButton.this.isHovered = true;
+                BoardButton.this.setBorder(new LineBorder(Color.RED, 2));
             }
             @Override
             public void mouseExited(MouseEvent event) {
-                Board parent = (Board)BoardButton.this.getClientProperty("parent");
-                if(parent != null && parent.isCompleted()) return;
+                if(BoardButton.this.mark != BoardMarks.MARK_EMPTY) return;
+                if(BoardButton.this.parent.isCompleted()) return;
 
+                BoardButton.this.isHovered = false;
                 BoardButton.this.setBorder(new LineBorder(Color.YELLOW, 0));
             }
             @Override
             public void mousePressed(MouseEvent event) {
                 if(BoardButton.this.mark != BoardMarks.MARK_EMPTY) return;
-
                 Board parent = (Board)BoardButton.this.getClientProperty("parent");
                 if(parent != null && parent.isCompleted()) return;
 
@@ -106,6 +113,22 @@ public class BoardButton extends JButton {
                 g.drawImage(BoardButton.imageMarkX, 0, 0, getWidth(), getHeight(), this);
             else
                 g.drawImage(BoardButton.imageMarkO, 0, 0, getWidth(), getHeight(), this);
+        } else {
+            // When it is hovered draw semitransparent marks
+            if(BoardButton.this.isHovered) {
+                // https://stackoverflow.com/questions/11552092/changing-image-opacity
+                Graphics2D g2d = (Graphics2D)g;
+                float opacity = 0.55f;
+                g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
+
+                Players p = GameLogic.getInstance().getTurn();
+                if(p == Players.PLAYER_O) {
+                    g2d.drawImage(BoardButton.imageMarkO, 0, 0, getWidth(), getHeight(), this);
+                } else {
+                    g2d.drawImage(BoardButton.imageMarkX, 0, 0, getWidth(), getHeight(), this);
+                }
+                g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
+            }
         }
     }
 }

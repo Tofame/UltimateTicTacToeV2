@@ -31,7 +31,7 @@ public class Board extends JPanel {
                 int offsetX = (buttonWidth - squareSize) / 2;
                 int offsetY = (buttonHeight - squareSize) / 2;
 
-                g.setColor(Color.CYAN); // Color of lines beetween fields
+                g.setColor(Color.WHITE); // Color of lines beetween fields
                 g.fillRect(offsetX, offsetY, squareSize, squareSize);
             }
         };
@@ -40,9 +40,8 @@ public class Board extends JPanel {
 
         // Fill board's fieldsPanel with buttons
         for(int i = 0; i < 9; i++) {
-            BoardButton b = new BoardButton();
+            BoardButton b = new BoardButton(this);
             b.setPosition(i);
-            b.putClientProperty("parent", this);
             fieldsPanel.add(b);
         }
 
