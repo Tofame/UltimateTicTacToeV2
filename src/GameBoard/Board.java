@@ -10,6 +10,8 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class Board extends JPanel {
+    private static final int MAX_BOARDBUTTONS = 9;
+
     private boolean completed;
     private int position;
 
@@ -45,7 +47,7 @@ public class Board extends JPanel {
         buttonsPanel.setLayout(new GridLayout(3, 3, 5, 5));
 
         // Fill board's fieldsPanel with buttons
-        for(int i = 0; i < 9; i++) {
+        for(int i = 0; i < MAX_BOARDBUTTONS; i++) {
             BoardButton b = new BoardButton(this);
             b.setPosition(i);
             buttonsPanel.add(b);
@@ -78,6 +80,18 @@ public class Board extends JPanel {
         return ((BoardButton)this.buttonsPanel.getComponent(position)).getMark();
     }
 
+    public ArrayList<BoardButton> getBoardButtons() {
+        ArrayList<BoardButton> tempBoardButtonsArray = new ArrayList<>(MAX_BOARDBUTTONS);
+
+        for(Component c : this.buttonsPanel.getComponents()) {
+            if(c instanceof BoardButton) {
+                tempBoardButtonsArray.add((BoardButton)c);
+            }
+        }
+
+        return tempBoardButtonsArray;
+    }
+
     public BoardMarks getMark() {
         return mark;
     }
@@ -95,16 +109,38 @@ public class Board extends JPanel {
 
         boolean boardWin = validateBoard(buttonPos, mark);
         boolean gameWin = false;
+        boolean gameTie = false;
         if(boardWin) {
             onBoardWin(mark);
             gameWin = BoardPanel.getInstance().validateMainBoard(this.getPosition(), mark);
 
             if(gameWin) {
                 GameLogic.getInstance().onGameWin(mark);
+                return;
+            }
+        } else {
+            // Check if board is full, if yes set it to completed
+            int countFilled = 0;
+            for(BoardButton b : getBoardButtons()) {
+                if(b.getMark() != BoardMarks.MARK_EMPTY) {
+                    countFilled++;
+                }
+            }
+
+            if(countFilled == MAX_BOARDBUTTONS) {
+                this.setCompleted(true);
             }
         }
 
         if(!gameWin) {
+            gameTie = BoardPanel.getInstance().isGameTied();
+            if(gameTie) {
+                GameLogic.getInstance().onGameTie();
+            }
+        }
+
+        // There was no tie and no win either, so we proceed normally
+        if(!gameWin && !gameTie) {
             GameLogic.getInstance().nextTurn();
         }
     }

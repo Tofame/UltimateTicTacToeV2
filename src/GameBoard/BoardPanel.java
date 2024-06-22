@@ -53,6 +53,19 @@ public class BoardPanel extends JPanel {
         }
     }
 
+    public boolean isGameTied() {
+        boolean tie = true;
+
+        for(Board board : getBoards()) {
+            if(!board.isCompleted()) {
+                tie = false;
+                break;
+            }
+        }
+
+        return tie;
+    }
+
     // Solely to prevent an issue where there would be thin border-lines
     // If BoardPanel had non-black background and there was resizing done.
     @Override

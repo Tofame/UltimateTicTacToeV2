@@ -151,6 +151,11 @@ public class GameLogic {
         BoardPanel.getInstance().completeAll();
     }
 
+    public void onGameTie() {
+        this.setGameState(GameState.TIE);
+        this.support.firePropertyChange("gameInfoChanged", null, this.turn);
+    }
+
     public void addPropertyChangeListener(PropertyChangeListener listener)  {
         support.addPropertyChangeListener(listener);
     }
