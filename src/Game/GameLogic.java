@@ -139,6 +139,7 @@ public class GameLogic {
     public void quitGame() {
         JPanel cardPanel = GameWindow.getInstance().getCardPanel();
         ((CardLayout)cardPanel.getLayout()).show(cardPanel, "MainMenuPanel");
+        BoardPanel.getInstance().resetBoardPanel();
     }
 
     public void onGameWin(BoardMarks winnerMark) {

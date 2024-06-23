@@ -215,4 +215,17 @@ public class BoardPanel extends JPanel {
 
         return true;
     }
+
+    public void resetBoardPanel() {
+        highlightBoard(-1);
+        setBoardPosWithMove(-1);
+        var boards = this.getBoards();
+        for(Board board : boards) {
+            board.setCompleted(false);
+            for(BoardButton boardButton : board.getBoardButtons()) {
+                boardButton.setMark(BoardMarks.MARK_EMPTY);
+                boardButton.repaint();
+            }
+        }
+    }
 }
