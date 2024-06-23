@@ -28,7 +28,6 @@ public class GameLogic {
     private GameState gameState = GameState.DEFAULT;
 
     private Players turn;
-    private boolean isAIMode;
     private PropertyChangeSupport support;
 
     private GameLogic() {
@@ -62,12 +61,17 @@ public class GameLogic {
         }
         // We put null oldValue as we sometimes need to trigger gameInfoChanged even when old=new
         this.support.firePropertyChange("gameInfoChanged", null, this.turn);
+
+        // Check if the next player is AI
+        if (GameAI.getInstance().isAIModeEnabled() && GameAI.getInstance().isAITurn()) {
+            GameAI.getInstance().makeBestMove();
+        }
     }
 
     public String getTurnInfo() {
         String result = "";
 
-        if (isAIModeEnabled()) {
+        if (GameAI.getInstance().isAIModeEnabled()) {
             if (turn == Players.PLAYER_X) {
                 result = "your turn";
             } else {
@@ -120,19 +124,12 @@ public class GameLogic {
         return this.gameState;
     }
 
-    public boolean isAIModeEnabled() {
-        return isAIMode;
-    }
-    public void enableAIMode(boolean value) {
-        this.isAIMode = value;
-    }
-
     public void startGame(boolean AIMode) {
         JPanel cardPanel = GameWindow.getInstance().getCardPanel();
         ((CardLayout)cardPanel.getLayout()).show(cardPanel, "GamePanel");
         setGameState(GameState.DEFAULT);
 
-        enableAIMode(AIMode);
+        GameAI.getInstance().enableAIMode(AIMode);
         setTurn(Players.PLAYER_X);
     }
 

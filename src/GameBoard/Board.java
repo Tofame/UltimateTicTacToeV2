@@ -144,8 +144,8 @@ public class Board extends JPanel {
 
         // There was no tie and no win either, so we proceed normally
         if(!gameWin && !gameTie) {
-            GameLogic.getInstance().nextTurn();
             BoardPanel.getInstance().decideNextMove(buttonPos);
+            GameLogic.getInstance().nextTurn();
         }
     }
 
