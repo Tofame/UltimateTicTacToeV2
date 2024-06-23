@@ -185,4 +185,34 @@ public class BoardPanel extends JPanel {
         boardToHighlight.setBackground(Color.MAGENTA);
         boardToHighlight.setBorder(new LineBorder(new Color(204, 0, 153), 10));
     }
+
+    // Decide the next board where a move can be made, we take position of button that was clicked
+    // and by the rules of tic-tac-toe it's a position of next board
+    public void decideNextMove(int nextBoardPosition) {
+        Board nextBoard = BoardPanel.getInstance().getBoard(nextBoardPosition);
+
+        BoardPanel.getInstance().setBoardPosWithMove(nextBoardPosition);
+
+        if(BoardPanel.getInstance().canMoveBeMadeInBoard(nextBoard)) {
+            BoardPanel.getInstance().setBoardPosWithMove(nextBoardPosition);
+        } else {
+            // Move can be made anywhere as rules of Ultimate Tic Tac Toe say so.
+            BoardPanel.getInstance().setBoardPosWithMove(-1);
+        }
+
+        BoardPanel.getInstance().highlightBoard(nextBoardPosition);
+    }
+
+    // Returns true if a move can be made in the board that is passed in parameter.
+    public boolean canMoveBeMadeInBoard(Board boardChecked) {
+        if(boardChecked.isCompleted()) {
+            return false;
+        }
+
+        if(boardMovePos != -1 && boardMovePos != boardChecked.getPosition()) {
+            return false;
+        }
+
+        return true;
+    }
 }

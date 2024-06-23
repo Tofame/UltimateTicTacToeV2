@@ -101,6 +101,9 @@ public class Board extends JPanel {
     }
 
     public void onBoardClicked(BoardButton button) {
+        if(!BoardPanel.getInstance().canMoveBeMadeInBoard(this)) {
+            return;
+        }
         // Specifics of a move a player just made:
         int buttonPos = button.getPosition();
         BoardMarks mark = GameLogic.getInstance().getTurnMark();
@@ -142,11 +145,13 @@ public class Board extends JPanel {
         // There was no tie and no win either, so we proceed normally
         if(!gameWin && !gameTie) {
             GameLogic.getInstance().nextTurn();
+            BoardPanel.getInstance().decideNextMove(buttonPos);
         }
     }
 
     public void onBoardWin(BoardMarks winningMark) {
         this.setBackground(Color.BLACK);
+        this.setBorder(new LineBorder(Color.BLACK, 10));
 
         this.setMark(winningMark);
         this.setCompleted(true);

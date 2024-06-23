@@ -50,7 +50,6 @@ public class BoardButton extends JButton {
                 if(BoardButton.this.parent.isCompleted()) return;
 
                 BoardButton.this.isHovered = true;
-                BoardButton.this.setBorder(new LineBorder(Color.GREEN, 3));
             }
             @Override
             public void mouseExited(MouseEvent event) {
@@ -58,7 +57,6 @@ public class BoardButton extends JButton {
                 if(BoardButton.this.parent.isCompleted()) return;
 
                 BoardButton.this.isHovered = false;
-                BoardButton.this.setBorder(new LineBorder(Color.GREEN, 0));
             }
             @Override
             public void mousePressed(MouseEvent event) {
