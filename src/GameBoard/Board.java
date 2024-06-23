@@ -2,10 +2,9 @@ package GameBoard;
 
 import Game.GameLogic;
 import GameUtils.BoardMarks;
-import GameUtils.Players;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -24,6 +23,7 @@ public class Board extends JPanel {
 
         this.setLayout(new BorderLayout());
         this.setOpaque(true);
+        this.setBorder(new LineBorder(Color.BLACK, 10));
 
         buttonsPanel = new JPanel(){
             // Solely to prevent an issue where there would be thin border lines
@@ -34,7 +34,7 @@ public class Board extends JPanel {
 
                 int buttonWidth = getWidth();
                 int buttonHeight = getHeight();
-                int squareSize = (int) (Math.min(buttonWidth, buttonHeight) / 1.12);
+                int squareSize = (int) (Math.min(buttonWidth, buttonHeight));
 
                 int offsetX = (buttonWidth - squareSize) / 2;
                 int offsetY = (buttonHeight - squareSize) / 2;
@@ -152,7 +152,6 @@ public class Board extends JPanel {
         this.setCompleted(true);
 
         this.buttonsPanel.setVisible(false);
-        this.buttonsPanel.removeAll();
 
         Image img;
         if(winningMark == BoardMarks.MARK_O)

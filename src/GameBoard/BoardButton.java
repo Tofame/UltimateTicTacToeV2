@@ -38,7 +38,7 @@ public class BoardButton extends JButton {
         this.setPreferredSize(new Dimension(50, 50));
 
         // Set better appearance of JButton
-        this.setBorder(new LineBorder(Color.YELLOW, 0));
+        this.setBorder(new LineBorder(Color.GREEN, 0));
         this.setBackground(Color.BLACK);
         setFocusPainted(false);
 
@@ -50,7 +50,7 @@ public class BoardButton extends JButton {
                 if(BoardButton.this.parent.isCompleted()) return;
 
                 BoardButton.this.isHovered = true;
-                BoardButton.this.setBorder(new LineBorder(Color.RED, 2));
+                BoardButton.this.setBorder(new LineBorder(Color.GREEN, 3));
             }
             @Override
             public void mouseExited(MouseEvent event) {
@@ -58,7 +58,7 @@ public class BoardButton extends JButton {
                 if(BoardButton.this.parent.isCompleted()) return;
 
                 BoardButton.this.isHovered = false;
-                BoardButton.this.setBorder(new LineBorder(Color.YELLOW, 0));
+                BoardButton.this.setBorder(new LineBorder(Color.GREEN, 0));
             }
             @Override
             public void mousePressed(MouseEvent event) {

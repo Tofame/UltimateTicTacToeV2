@@ -4,6 +4,7 @@ import Game.GameLogic;
 import GameUtils.BoardMarks;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -18,6 +19,11 @@ public class BoardPanel extends JPanel {
         return boardPanel_;
     }
 
+    // Position of board with allowed move. -1 -> any board, 0-8 otherwise.
+    public int boardMovePos = -1;
+    // Highlighted board position // -1 -> nothing highlighted
+    public int boardHighlighted = -1;
+
     private BoardPanel() {
         this.setLayout(new GridLayout(3, 3, 10, 10));
         this.setBackground(Color.BLACK);
@@ -29,6 +35,25 @@ public class BoardPanel extends JPanel {
             board.putClientProperty("parent", this);
             this.add(board);
         }
+    }
+
+    // Returns null if move can be made in any board
+    public Board getBoardWithMove() {
+        if(boardMovePos == -1) {
+            return null;
+        }
+
+        return (Board)this.getComponent(boardMovePos);
+    }
+
+    // Returns null if move can be made in any board
+    public int getBoardPosWithMove() {
+        return boardMovePos;
+    }
+
+    // Sets a board where moves are allowed. '-1' value for any board.
+    public void setBoardPosWithMove(int position) {
+        boardMovePos = position;
     }
 
     public ArrayList<Board> getBoards() {
@@ -44,6 +69,10 @@ public class BoardPanel extends JPanel {
     }
 
     public Board getBoard(int position) {
+        if(position == -1) {
+            return null;
+        }
+
         return (Board)this.getComponent(position);
     }
 
@@ -128,5 +157,32 @@ public class BoardPanel extends JPanel {
         }
 
         return false;
+    }
+
+    public void highlightBoard(int position) {
+        if(boardHighlighted != -1) {
+            Board boardToRemoveHighlight = getBoard(boardHighlighted);
+            if(boardToRemoveHighlight != null && !boardToRemoveHighlight.isCompleted()) {
+                for(BoardButton bb : boardToRemoveHighlight.getBoardButtons()) {
+                    bb.setBackground(Color.BLACK);
+                }
+                boardToRemoveHighlight.setBackground(Color.WHITE);
+                boardToRemoveHighlight.setBorder(new LineBorder(Color.BLACK, 10));
+            }
+        }
+
+        Board boardToHighlight = getBoard(position);
+        if(boardToHighlight == null) return;
+
+        // The board meant to be highlighted might be completed
+        if(boardToHighlight.isCompleted()) {
+            return;
+        }
+
+        this.boardHighlighted = position;
+        for(BoardButton bb : boardToHighlight.getBoardButtons())
+            bb.setBackground(Color.MAGENTA);
+        boardToHighlight.setBackground(Color.MAGENTA);
+        boardToHighlight.setBorder(new LineBorder(new Color(204, 0, 153), 10));
     }
 }
