@@ -41,7 +41,6 @@ public class GameAI {
         BoardButton button = bestMove.getSecond();
 
         if (board != null && button != null) {
-            System.out.println("beb");
             board.onBoardClicked(button);
         }
     }
