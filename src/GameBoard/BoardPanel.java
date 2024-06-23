@@ -89,7 +89,7 @@ public class BoardPanel extends JPanel {
         int row = boardWonPos / 3;
         boolean rowWin = true;
         for (int col = 0; col < 3; col++) {
-            if (getBoard(row * 3 + col).getMark() == wonBoardMark) {
+            if (getBoard(row * 3 + col).getMark() != wonBoardMark) {
                 rowWin = false;
                 break;
             }
@@ -102,7 +102,7 @@ public class BoardPanel extends JPanel {
         int col = boardWonPos % 3;
         boolean colWin = true;
         for (int r = 0; r < 3; r++) {
-            if (getBoard(r * 3 + col).getMark() == wonBoardMark) {
+            if (getBoard(r * 3 + col).getMark() != wonBoardMark) {
                 colWin = false;
                 break;
             }
