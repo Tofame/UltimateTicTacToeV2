@@ -69,6 +69,10 @@ public class BoardButton extends JButton {
         });
     }
 
+    public Board getParentBoard() {
+        return this.parent;
+    }
+
     public BoardMarks getMark() {
         return mark;
     }

@@ -100,6 +100,18 @@ public class Board extends JPanel {
         this.mark = mark;
     }
 
+    public ArrayList<BoardButton> getUnmarkedButtons() {
+        ArrayList<BoardButton> tempBoardButtonsArray = new ArrayList<>(MAX_BOARDBUTTONS);
+
+        for(BoardButton boardButton : getBoardButtons()) {
+            if(boardButton.getMark() == BoardMarks.MARK_EMPTY) {
+                tempBoardButtonsArray.add(boardButton);
+            }
+        }
+
+        return tempBoardButtonsArray;
+    }
+
     public void onBoardClicked(BoardButton button) {
         if(!BoardPanel.getInstance().canMoveBeMadeInBoard(this)) {
             return;

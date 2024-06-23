@@ -1,7 +1,9 @@
 package GameBoard;
 
+import Game.GameAI;
 import Game.GameLogic;
 import GameUtils.BoardMarks;
+import GameUtils.Players;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -206,6 +208,13 @@ public class BoardPanel extends JPanel {
     // Returns true if a move can be made in the board that is passed in parameter.
     public boolean canMoveBeMadeInBoard(Board boardChecked) {
         if(boardChecked.isCompleted()) {
+            return false;
+        }
+
+        if(GameLogic.getInstance().getTurn() != Players.PLAYER_O &&
+           GameAI.getInstance().isAIModeEnabled() &&
+           GameAI.getInstance().isAITurn())
+        {
             return false;
         }
 

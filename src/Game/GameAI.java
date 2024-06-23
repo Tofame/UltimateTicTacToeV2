@@ -41,6 +41,7 @@ public class GameAI {
         BoardButton button = bestMove.getSecond();
 
         if (board != null && button != null) {
+            System.out.println("beb");
             board.onBoardClicked(button);
         }
     }
@@ -66,13 +67,83 @@ public class GameAI {
     }
 
     public MyPair<Board, BoardButton> findBestMoveFromBoards(ArrayList<Board> boards) {
+        // Enemy won't win a board && won't move anywhere
+        ArrayList<MyPair<Board, BoardButton>> greatMoves = new ArrayList<>();
+        // Enemy won't win a board
+        ArrayList<MyPair<Board, BoardButton>> goodMoves = new ArrayList<>();
+        // AI can win a board
+        ArrayList<MyPair<Board, BoardButton>> averageMoves = new ArrayList<>();
+        // Any available moves if nothing else from above was fitting
+        ArrayList<MyPair<Board, BoardButton>> availableMoves = new ArrayList<>();
+
         for (Board board : boards) {
-            for (BoardButton button : board.getBoardButtons()) {
-                if (button.getMark() == BoardMarks.MARK_EMPTY) {
-                    return new MyPair<>(board, button);
+            for (BoardButton button : board.getUnmarkedButtons()) {
+                boolean playerWinsBoard = false;
+                boolean playerCanMoveAnywhere = false;
+                boolean AIWinsBoard = false;
+
+                // Check if this move wins the board for AI
+                button.setMark(BoardMarks.MARK_O);
+                if (board.validateBoard(button.getPosition(), BoardMarks.MARK_O)) {
+                    AIWinsBoard = true;
                 }
+                button.setMark(BoardMarks.MARK_EMPTY);
+
+                // Check if this move doesn't lose AI the board in next player's move
+                Board nextBoard = BoardPanel.getInstance().getBoard(button.getPosition());
+                if(nextBoard.getUnmarkedButtons().isEmpty()) {
+                    playerCanMoveAnywhere = true;
+                } else {
+                    for (BoardButton buttonForPlayer : nextBoard.getUnmarkedButtons()) {
+                        buttonForPlayer.setMark(BoardMarks.MARK_X);
+                        if (nextBoard.validateBoard(buttonForPlayer.getPosition(), BoardMarks.MARK_X)) {
+                            playerWinsBoard = true;
+                            buttonForPlayer.setMark(BoardMarks.MARK_EMPTY);
+                            break;
+                        } else {
+                            buttonForPlayer.setMark(BoardMarks.MARK_EMPTY);
+                        }
+                    }
+                }
+
+                // It's a best move: Player won't win a board, won't be able to move ANYWHERE && AI can win
+                if(!playerWinsBoard && !playerCanMoveAnywhere && AIWinsBoard) {
+                    return new MyPair<>(button.getParentBoard(), button);
+                }
+
+                if(!playerWinsBoard && !playerCanMoveAnywhere) {
+                    greatMoves.add(new MyPair<>(button.getParentBoard(), button));
+                    continue;
+                }
+
+                if(!playerWinsBoard) {
+                    goodMoves.add(new MyPair<>(button.getParentBoard(), button));
+                    continue;
+                }
+
+                if(AIWinsBoard) {
+                    averageMoves.add(new MyPair<>(button.getParentBoard(), button));
+                    continue;
+                }
+
+                availableMoves.add(new MyPair<>(button.getParentBoard(), button));
             }
         }
+
+        if (!greatMoves.isEmpty()) {
+            return greatMoves.get(0);
+        }
+        if (!goodMoves.isEmpty()) {
+            return goodMoves.get(0);
+        }
+        if (!averageMoves.isEmpty()) {
+            return averageMoves.get(0);
+        }
+        if (!availableMoves.isEmpty()) {
+            return availableMoves.get(0);
+        }
+
+        System.out.println("Shouldnt happen");
         return new MyPair<>(null, null);
     }
 }
