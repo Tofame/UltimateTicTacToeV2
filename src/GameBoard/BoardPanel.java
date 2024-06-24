@@ -105,7 +105,7 @@ public class BoardPanel extends JPanel {
 
         int panelWidth = getWidth();
         int panelHeight = getHeight();
-        int squareSize = (int) (Math.min(panelWidth, panelHeight) / 1.005);
+        int squareSize = (int) (Math.min(panelWidth, panelHeight));
 
         int offsetX = (panelWidth - squareSize) / 2;
         int offsetY = (panelHeight - squareSize) / 2;
@@ -168,7 +168,7 @@ public class BoardPanel extends JPanel {
                 for(BoardButton bb : boardToRemoveHighlight.getBoardButtons()) {
                     bb.setBackground(Color.BLACK);
                 }
-                boardToRemoveHighlight.setBackground(Color.WHITE);
+                boardToRemoveHighlight.setBackground(Color.BLACK);
                 boardToRemoveHighlight.setBorder(new LineBorder(Color.BLACK, 10));
             }
         }

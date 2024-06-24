@@ -22,7 +22,7 @@ public class Board extends JPanel {
         this.mark = BoardMarks.MARK_EMPTY;
 
         this.setLayout(new BorderLayout());
-        this.setOpaque(true);
+        this.setBackground(Color.BLACK);
         this.setBorder(new LineBorder(Color.BLACK, 10));
 
         buttonsPanel = new JPanel(){
@@ -39,7 +39,7 @@ public class Board extends JPanel {
                 int offsetX = (buttonWidth - squareSize) / 2;
                 int offsetY = (buttonHeight - squareSize) / 2;
 
-                g.setColor(Color.WHITE); // Color of lines beetween fields
+                g.setColor(Color.GREEN); // Color of lines beetween fields
                 g.fillRect(offsetX, offsetY, squareSize, squareSize);
             }
         };
