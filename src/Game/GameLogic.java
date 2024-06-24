@@ -133,10 +133,20 @@ public class GameLogic {
         setTurn(Players.PLAYER_X);
     }
 
-    public void quitGame() {
+    public void backToMenu() {
         JPanel cardPanel = GameWindow.getInstance().getCardPanel();
         ((CardLayout)cardPanel.getLayout()).show(cardPanel, "MainMenuPanel");
         BoardPanel.getInstance().resetBoardPanel();
+    }
+
+    public void quitGame() {
+        JPanel cardPanel = GameWindow.getInstance().getCardPanel();
+        ((CardLayout)cardPanel.getLayout()).show(cardPanel, "QuitGamePanel");
+    }
+
+    public void resumeGame() {
+        JPanel cardPanel = GameWindow.getInstance().getCardPanel();
+        ((CardLayout)cardPanel.getLayout()).show(cardPanel, "GamePanel");
     }
 
     public void onGameWin(BoardMarks winnerMark) {
