@@ -1,6 +1,7 @@
 package GameBoard;
 
 import Game.GameLogic;
+import Game.MovesLog;
 import GameUtils.BoardMarks;
 
 import javax.swing.*;
@@ -127,6 +128,11 @@ public class Board extends JPanel {
         BoardMarks mark = GameLogic.getInstance().getTurnMark();
 
         button.setMark(mark);
+
+        // Saving in a moveLog
+        button.setBackground(Color.GREEN);
+        MovesLog.getInstance().addBoardToMoveHistory();
+        button.setBackground(Color.BLACK);
 
         boolean boardWin = validateBoard(buttonPos, mark);
         boolean gameWin = false;

@@ -65,9 +65,6 @@ public class GamePanel extends BasicBackgroundPanel {
 
         // Moves History
         MovesLog movesLog = MovesLog.getInstance();
-        movesLog.setBackground(Color.YELLOW);
-        movesLog.setMinimumSize(new Dimension(160, 400));
-        movesLog.setPreferredSize(new Dimension(200, 560));
 
         // Add to contentPanel
         contentPanel.add(movesLog);

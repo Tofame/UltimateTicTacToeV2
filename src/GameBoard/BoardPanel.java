@@ -2,6 +2,7 @@ package GameBoard;
 
 import Game.GameAI;
 import Game.GameLogic;
+import Game.MovesLog;
 import GameUtils.BoardMarks;
 import GameUtils.Players;
 
@@ -251,5 +252,8 @@ public class BoardPanel extends JPanel {
             board.getButtonsPanel().setVisible(true);
             board.repaint();
         }
+
+        // Reset moves log
+        MovesLog.getInstance().clear();
     }
 }

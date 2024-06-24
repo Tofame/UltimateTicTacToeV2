@@ -46,6 +46,8 @@ public class GameWindow extends JFrame {
         // Create Game Panel
         GamePanel gamePanel = new GamePanel();
         cardPanel.add(gamePanel, "GamePanel");
+        // Initialize MovesLog by calling it's getInstance()
+        MovesLog.getInstance();
 
         // Resizing, doesn't work.
 //        this.addComponentListener(new ComponentAdapter() {
