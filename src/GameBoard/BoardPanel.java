@@ -29,6 +29,8 @@ public class BoardPanel extends JPanel {
     private BoardPanel() {
         this.setLayout(new GridLayout(3, 3, 10, 10));
         this.setBackground(Color.BLACK);
+        this.setMinimumSize(new Dimension(400, 400));
+        this.setPreferredSize(new Dimension(560, 560));
 
         // Fill the board panel with boards
         for(int i = 0; i < 9; i++) {
@@ -37,6 +39,7 @@ public class BoardPanel extends JPanel {
             board.putClientProperty("parent", this);
             this.add(board);
         }
+
     }
 
     // Returns null if move can be made in any board

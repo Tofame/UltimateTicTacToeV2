@@ -60,8 +60,17 @@ public class GamePanel extends BasicBackgroundPanel {
         JPanel contentPanel = new JPanel();
         contentPanel.setLayout(new GridBagLayout());
         contentPanel.setOpaque(false);
+        contentPanel.setMinimumSize(new Dimension(500, 500));
         this.add(contentPanel, BorderLayout.CENTER);
 
+        // Moves History
+        MovesLog movesLog = MovesLog.getInstance();
+        movesLog.setBackground(Color.YELLOW);
+        movesLog.setMinimumSize(new Dimension(160, 400));
+        movesLog.setPreferredSize(new Dimension(200, 560));
+
+        // Add to contentPanel
+        contentPanel.add(movesLog);
         contentPanel.add(BoardPanel.getInstance());
 
         // Quit Button
