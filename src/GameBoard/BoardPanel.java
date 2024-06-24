@@ -170,7 +170,7 @@ public class BoardPanel extends JPanel {
     public void highlightBoard(int position) {
         if(boardHighlighted != -1) {
             Board boardToRemoveHighlight = getBoard(boardHighlighted);
-            if(boardToRemoveHighlight != null && !boardToRemoveHighlight.isCompleted()) {
+            if(boardToRemoveHighlight != null) {
                 for(BoardButton bb : boardToRemoveHighlight.getBoardButtons()) {
                     bb.setBackground(Color.BLACK);
                 }

@@ -57,6 +57,8 @@ public class BoardButton extends JButton {
                 if(BoardButton.this.parent.isCompleted()) return;
 
                 BoardButton.this.isHovered = false;
+
+                BoardButton.this.repaint();
             }
             @Override
             public void mousePressed(MouseEvent event) {

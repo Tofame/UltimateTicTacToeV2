@@ -104,6 +104,10 @@ public class Board extends JPanel {
     }
 
     public ArrayList<BoardButton> getUnmarkedButtons() {
+        if(this.isCompleted()) {
+            return new ArrayList<BoardButton>(0);
+        }
+
         ArrayList<BoardButton> tempBoardButtonsArray = new ArrayList<>(MAX_BOARDBUTTONS);
 
         for(BoardButton boardButton : getBoardButtons()) {

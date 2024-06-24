@@ -5,9 +5,11 @@ import GameBoard.BoardButton;
 import GameBoard.BoardPanel;
 import GameUtils.BoardMarks;
 import GameUtils.Players;
-import Utils.MyPair;
+import Utils.EvaluatedMove;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.PriorityQueue;
 
 public class GameAI {
     private static GameAI gameAI_ = null;
@@ -18,7 +20,6 @@ public class GameAI {
         }
         return gameAI_;
     }
-
     private GameAI() {}
 
     private boolean enabledAI = false;
@@ -62,35 +63,36 @@ public class GameAI {
     }
 
     public BoardButton findBestMoveButtonFromBoards(ArrayList<Board> boards) {
-        // The best move (no-win, no-anywhere, ai-wins) has immediate return, below in the code.
-        // ...
-        // Enemy won't win a board && won't have 'anywhere' move
-        ArrayList<BoardButton> greatMoves = new ArrayList<>();
-        // Enemy won't win a board
-        ArrayList<BoardButton> goodMoves = new ArrayList<>();
-        // AI can win a board
-        ArrayList<BoardButton> averageMoves = new ArrayList<>();
-        // Any available moves if nothing else from above was fitting
-        ArrayList<BoardButton> availableMoves = new ArrayList<>();
+        // https://www.geeksforgeeks.org/priority-queue-class-in-java/
+        // Priority queue is a collection that will store our buttons and sort them in descending order (1st element will be of highest score)
+        PriorityQueue<EvaluatedMove<BoardButton, Integer>> evaluatedMoves = new PriorityQueue<>(new Comparator<EvaluatedMove<BoardButton, Integer>>() {
+            @Override
+            public int compare(EvaluatedMove<BoardButton, Integer> pair1, EvaluatedMove<BoardButton, Integer> pair2) {
+                return pair2.getSecond().compareTo(pair1.getSecond());
+            }
+        });
 
         for (Board board : boards) {
             for (BoardButton button : board.getUnmarkedButtons()) {
-                boolean playerWinsBoard = false;
-                boolean playerCanMoveAnywhere = false;
-                boolean AIWinsBoard = false;
+                int moveScore = 0;
 
                 // Check if this move wins the board for AI
                 button.setMark(BoardMarks.MARK_O);
                 if (board.validateBoard(button.getPosition(), BoardMarks.MARK_O)) {
-                    AIWinsBoard = true;
+                    moveScore += AIWeightChoice.AI_WIN.getValue();
+                } else {
+                    moveScore += AIWeightChoice.AI_NO_WIN.getValue();
                 }
                 button.setMark(BoardMarks.MARK_EMPTY);
 
                 // Check if this move doesn't lose AI the board in next player's move
                 Board nextBoard = BoardPanel.getInstance().getBoard(button.getPosition());
-                if(nextBoard.isCompleted() || nextBoard.getUnmarkedButtons().isEmpty()) {
-                    playerCanMoveAnywhere = true;
+                if(nextBoard.getUnmarkedButtons().isEmpty()) {
+                    moveScore += AIWeightChoice.PLAYER_MOVE_ANYWHERE.getValue();
                 } else {
+                    moveScore += AIWeightChoice.PLAYER_NO_MOVE_ANYWHERE.getValue();
+
+                    boolean playerWinsBoard = false;
                     for (BoardButton buttonForPlayer : nextBoard.getUnmarkedButtons()) {
                         buttonForPlayer.setMark(BoardMarks.MARK_X);
                         if (nextBoard.validateBoard(buttonForPlayer.getPosition(), BoardMarks.MARK_X)) {
@@ -101,45 +103,24 @@ public class GameAI {
                             buttonForPlayer.setMark(BoardMarks.MARK_EMPTY);
                         }
                     }
+
+                    if(playerWinsBoard)
+                        moveScore += AIWeightChoice.PLAYER_WIN.getValue();
+                    else
+                        moveScore += AIWeightChoice.PLAYER_NO_WIN.getValue();
                 }
 
-                // It's a best move: Player won't win a board, won't be able to move ANYWHERE && AI can win
-                if(!playerWinsBoard && !playerCanMoveAnywhere && AIWinsBoard) {
-                    return button;
-                }
-
-                if(!playerWinsBoard && !playerCanMoveAnywhere) {
-                    greatMoves.add(button);
-                    continue;
-                }
-
-                if(!playerWinsBoard) {
-                    goodMoves.add(button);
-                    continue;
-                }
-
-                if(AIWinsBoard) {
-                    averageMoves.add(button);
-                    continue;
-                }
-
-                availableMoves.add(button);
+                evaluatedMoves.add(new EvaluatedMove<>(button, moveScore));
             }
         }
 
-        if (!greatMoves.isEmpty()) {
-            return greatMoves.get(0);
-        }
-        if (!goodMoves.isEmpty()) {
-            return goodMoves.get(0);
-        }
-        if (!averageMoves.isEmpty()) {
-            return averageMoves.get(0);
-        }
-        if (!availableMoves.isEmpty()) {
-            return availableMoves.get(0);
+        if(evaluatedMoves.isEmpty()) {
+            // It is very unlikely (impossible) to happen, but let's have an exception anyway.
+            throw new RuntimeException("GameAI::findBestMoveButtonFromBoards() couldn't find even 1 move.");
         }
 
-        throw new RuntimeException("GameAI::findBestMoveButtonFromBoards() couldn't find even 1 move.");
+        // We will not get sorted elements by printing PriorityQueue.
+        // System.out.println(evaluatedMoves);
+        return evaluatedMoves.element().getFirst();
     }
 }
