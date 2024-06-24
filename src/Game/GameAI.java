@@ -88,7 +88,7 @@ public class GameAI {
 
                 // Check if this move doesn't lose AI the board in next player's move
                 Board nextBoard = BoardPanel.getInstance().getBoard(button.getPosition());
-                if(nextBoard.getUnmarkedButtons().isEmpty()) {
+                if(nextBoard.isCompleted() || nextBoard.getUnmarkedButtons().isEmpty()) {
                     playerCanMoveAnywhere = true;
                 } else {
                     for (BoardButton buttonForPlayer : nextBoard.getUnmarkedButtons()) {
