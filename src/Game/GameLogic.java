@@ -51,6 +51,11 @@ public class GameLogic {
         this.turn = turn;
         // We put null oldValue as we sometimes need to trigger gameInfoChanged even when old=new
         this.support.firePropertyChange("gameInfoChanged", null, this.turn);
+
+        // Check if the player now is an AI
+        if (GameAI.getInstance().isAIModeEnabled() && GameAI.getInstance().isAITurn()) {
+            GameAI.getInstance().makeBestMove();
+        }
     }
     public void nextTurn() {
         Players oldTurn = this.turn;
@@ -131,6 +136,15 @@ public class GameLogic {
 
         GameAI.getInstance().enableAIMode(AIMode);
         setTurn(Players.PLAYER_X);
+    }
+
+    public void startLoadedGame(boolean AIMode, Players startingPlayer) {
+        JPanel cardPanel = GameWindow.getInstance().getCardPanel();
+        ((CardLayout)cardPanel.getLayout()).show(cardPanel, "GamePanel");
+        setGameState(GameState.DEFAULT);
+
+        GameAI.getInstance().enableAIMode(AIMode);
+        setTurn(startingPlayer);
     }
 
     public void backToMenu() {

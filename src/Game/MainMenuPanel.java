@@ -102,7 +102,7 @@ public class MainMenuPanel extends BasicBackgroundPanel {
         loadGameButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                SaveManager.loadGame();
             }
         });
 

@@ -88,7 +88,7 @@ public class QuitGamePanel extends BasicBackgroundPanel {
         saveGameButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                SaveManager.saveGame();
             }
         });
 

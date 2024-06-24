@@ -51,7 +51,7 @@ public class GameWindow extends JFrame {
         MovesLog.getInstance();
 
         // Create QuitGamePanel
-        QuitGamePanel quitGamePanel = new QuitGamePanel("background.png");
+        QuitGamePanel quitGamePanel = new QuitGamePanel("BG_1.png");
         cardPanel.add(quitGamePanel, "QuitGamePanel");
 
         // Resizing, doesn't work.
