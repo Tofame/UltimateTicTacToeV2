@@ -62,6 +62,8 @@ public class GameAI {
     }
 
     public BoardButton findBestMoveButtonFromBoards(ArrayList<Board> boards) {
+        // The best move (no-win, no-anywhere, ai-wins) has immediate return, below in the code.
+        // ...
         // Enemy won't win a board && won't have 'anywhere' move
         ArrayList<BoardButton> greatMoves = new ArrayList<>();
         // Enemy won't win a board

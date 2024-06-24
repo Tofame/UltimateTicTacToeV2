@@ -16,6 +16,8 @@ public class Board extends JPanel {
 
     private BoardMarks mark;
     private JPanel buttonsPanel;
+    // It's the big X/O mark, when the board is won.
+    public JLabel markLabel;
 
     public Board() {
         this.completed = false;
@@ -39,7 +41,7 @@ public class Board extends JPanel {
                 int offsetX = (buttonWidth - squareSize) / 2;
                 int offsetY = (buttonHeight - squareSize) / 2;
 
-                g.setColor(Color.GREEN); // Color of lines beetween fields
+                g.setColor(Color.WHITE); // Color of lines beetween fields
                 g.fillRect(offsetX, offsetY, squareSize, squareSize);
             }
         };
@@ -112,6 +114,10 @@ public class Board extends JPanel {
         return tempBoardButtonsArray;
     }
 
+    public JPanel getButtonsPanel() {
+        return buttonsPanel;
+    }
+
     public void onBoardClicked(BoardButton button) {
         if(!BoardPanel.getInstance().canMoveBeMadeInBoard(this)) {
             return;
@@ -178,11 +184,14 @@ public class Board extends JPanel {
 
         Image scaledImg = img.getScaledInstance(150, 150, Image.SCALE_SMOOTH);
 
-        JLabel markLabel = new JLabel();
+        if(markLabel == null) {
+            markLabel = new JLabel();
+            markLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            markLabel.setVerticalAlignment(SwingConstants.CENTER);
+            this.add(markLabel);
+        }
         markLabel.setIcon(new ImageIcon(scaledImg));
-        markLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        markLabel.setVerticalAlignment(SwingConstants.CENTER);
-        this.add(markLabel);
+        markLabel.setVisible(true);
     }
 
     // Validates all rows, columns and diagonals in a board. Takes parameter 'buttonPos',

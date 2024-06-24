@@ -161,6 +161,8 @@ public class BoardPanel extends JPanel {
         return false;
     }
 
+    // Removes highlight if any board was highlighted
+    // And then highlights a board according to a passed position. In case of '-1', nothing is highlighted.
     public void highlightBoard(int position) {
         if(boardHighlighted != -1) {
             Board boardToRemoveHighlight = getBoard(boardHighlighted);
@@ -231,10 +233,20 @@ public class BoardPanel extends JPanel {
         var boards = this.getBoards();
         for(Board board : boards) {
             board.setCompleted(false);
+            board.setMark(BoardMarks.MARK_EMPTY);
+
+            if(board.markLabel != null) {
+                board.markLabel.setVisible(false);
+            }
+
             for(BoardButton boardButton : board.getBoardButtons()) {
                 boardButton.setMark(BoardMarks.MARK_EMPTY);
+                boardButton.setBackground(Color.BLACK);
                 boardButton.repaint();
             }
+
+            board.getButtonsPanel().setVisible(true);
+            board.repaint();
         }
     }
 }
