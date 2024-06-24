@@ -36,18 +36,15 @@ public class GameAI {
     }
 
     public void makeBestMove() {
-        MyPair<Board, BoardButton> bestMove = findBestMove();
-        Board board = bestMove.getFirst();
-        BoardButton button = bestMove.getSecond();
+        BoardButton bestMoveButton = findBestMoveButton();
 
-        if (board != null && button != null) {
-            board.onBoardClicked(button);
+        if (bestMoveButton != null) {
+            bestMoveButton.getParentBoard().onBoardClicked(bestMoveButton);
         }
     }
 
-    public MyPair<Board, BoardButton> findBestMove() {
+    public BoardButton findBestMoveButton() {
         Board boardToMoveIn = BoardPanel.getInstance().getBoardWithMove();
-        MyPair<Board, BoardButton> bestMovePair = new MyPair<>(boardToMoveIn, null);
 
         ArrayList<Board> boardsToCheck = new ArrayList<>();
         if (boardToMoveIn == null) {
@@ -61,19 +58,18 @@ public class GameAI {
             boardsToCheck.add(boardToMoveIn);
         }
 
-        bestMovePair = findBestMoveFromBoards(boardsToCheck);
-        return bestMovePair;
+        return findBestMoveButtonFromBoards(boardsToCheck);
     }
 
-    public MyPair<Board, BoardButton> findBestMoveFromBoards(ArrayList<Board> boards) {
-        // Enemy won't win a board && won't move anywhere
-        ArrayList<MyPair<Board, BoardButton>> greatMoves = new ArrayList<>();
+    public BoardButton findBestMoveButtonFromBoards(ArrayList<Board> boards) {
+        // Enemy won't win a board && won't have 'anywhere' move
+        ArrayList<BoardButton> greatMoves = new ArrayList<>();
         // Enemy won't win a board
-        ArrayList<MyPair<Board, BoardButton>> goodMoves = new ArrayList<>();
+        ArrayList<BoardButton> goodMoves = new ArrayList<>();
         // AI can win a board
-        ArrayList<MyPair<Board, BoardButton>> averageMoves = new ArrayList<>();
+        ArrayList<BoardButton> averageMoves = new ArrayList<>();
         // Any available moves if nothing else from above was fitting
-        ArrayList<MyPair<Board, BoardButton>> availableMoves = new ArrayList<>();
+        ArrayList<BoardButton> availableMoves = new ArrayList<>();
 
         for (Board board : boards) {
             for (BoardButton button : board.getUnmarkedButtons()) {
@@ -107,25 +103,25 @@ public class GameAI {
 
                 // It's a best move: Player won't win a board, won't be able to move ANYWHERE && AI can win
                 if(!playerWinsBoard && !playerCanMoveAnywhere && AIWinsBoard) {
-                    return new MyPair<>(button.getParentBoard(), button);
+                    return button;
                 }
 
                 if(!playerWinsBoard && !playerCanMoveAnywhere) {
-                    greatMoves.add(new MyPair<>(button.getParentBoard(), button));
+                    greatMoves.add(button);
                     continue;
                 }
 
                 if(!playerWinsBoard) {
-                    goodMoves.add(new MyPair<>(button.getParentBoard(), button));
+                    goodMoves.add(button);
                     continue;
                 }
 
                 if(AIWinsBoard) {
-                    averageMoves.add(new MyPair<>(button.getParentBoard(), button));
+                    averageMoves.add(button);
                     continue;
                 }
 
-                availableMoves.add(new MyPair<>(button.getParentBoard(), button));
+                availableMoves.add(button);
             }
         }
 
@@ -142,7 +138,6 @@ public class GameAI {
             return availableMoves.get(0);
         }
 
-        System.out.println("Shouldnt happen");
-        return new MyPair<>(null, null);
+        throw new RuntimeException("GameAI::findBestMoveButtonFromBoards() couldn't find even 1 move.");
     }
 }
