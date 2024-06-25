@@ -93,7 +93,7 @@ public class SaveManager {
                 String infoLine = saveReader.readLine();
                 BoardPanel.getInstance().setBoardPosWithMove(Character.getNumericValue(infoLine.charAt(0)));
                 BoardPanel.getInstance().highlightBoard(Character.getNumericValue(infoLine.charAt(1)));
-                boolean isAIMode = Character.getNumericValue(infoLine.charAt(1)) == 1;
+                boolean isAIMode = Character.getNumericValue(infoLine.charAt(2)) == 1;
 
                 int intPlayer = Character.getNumericValue(saveReader.readLine().charAt(0));
                 Players startingPlayer;
