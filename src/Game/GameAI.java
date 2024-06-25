@@ -80,6 +80,10 @@ public class GameAI {
                 button.setMark(BoardMarks.MARK_O);
                 if (board.validateBoard(button.getPosition(), BoardMarks.MARK_O)) {
                     moveScore += AIWeightChoice.AI_WIN.getValue();
+                    // This move wins whole game for AI, so we return it instantly.
+                    if(BoardPanel.getInstance().validateMainBoard(board.getPosition(), BoardMarks.MARK_O)) {
+                        return button;
+                    };
                 } else {
                     moveScore += AIWeightChoice.AI_NO_WIN.getValue();
                 }
