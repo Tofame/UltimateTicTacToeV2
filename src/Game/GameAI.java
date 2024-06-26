@@ -83,6 +83,7 @@ public class GameAI {
                     // This move wins whole game for AI, so we return it instantly.
                     board.setMark(BoardMarks.MARK_O);
                     if(BoardPanel.getInstance().validateMainBoard(board.getPosition(), BoardMarks.MARK_O)) {
+                        board.setMark(BoardMarks.MARK_EMPTY);
                         return button;
                     };
                     board.setMark(BoardMarks.MARK_EMPTY);
