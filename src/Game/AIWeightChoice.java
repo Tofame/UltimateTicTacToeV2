@@ -15,6 +15,7 @@ package Game;
 */
 
 public enum AIWeightChoice {
+    PLAYER_WIN_GAME(-100),
     PLAYER_NO_WIN(8),
     PLAYER_WIN(-8),
     PLAYER_NO_MOVE_ANYWHERE(5),

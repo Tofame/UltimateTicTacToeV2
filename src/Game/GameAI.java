@@ -84,6 +84,7 @@ public class GameAI {
                     board.setMark(BoardMarks.MARK_O);
                     if(BoardPanel.getInstance().validateMainBoard(board.getPosition(), BoardMarks.MARK_O)) {
                         board.setMark(BoardMarks.MARK_EMPTY);
+                        button.setMark(BoardMarks.MARK_EMPTY);
                         return button;
                     };
                     board.setMark(BoardMarks.MARK_EMPTY);
@@ -92,29 +93,72 @@ public class GameAI {
                 }
                 button.setMark(BoardMarks.MARK_EMPTY);
 
+
+
                 // Check if this move doesn't lose AI the board in next player's move
+                boolean playerWinsBoard = false;
+                boolean playerWinsGame = false;
                 Board nextBoard = BoardPanel.getInstance().getBoard(button.getPosition());
                 if(nextBoard.getUnmarkedButtons().isEmpty()) {
                     moveScore += AIWeightChoice.PLAYER_MOVE_ANYWHERE.getValue();
+
+                    // Player can move anywhere, so it should be checked whether he wins etc.
+                    for(Board anyBoard : BoardPanel.getInstance().getBoards()) {
+                        if(anyBoard.isCompleted()) {
+                            continue;
+                        }
+
+                        for(BoardButton bb : anyBoard.getUnmarkedButtons()) {
+                            bb.setMark(BoardMarks.MARK_X);
+                            if (anyBoard.validateBoard(bb.getPosition(), BoardMarks.MARK_X)) {
+                                playerWinsBoard = true;
+
+                                anyBoard.setMark(BoardMarks.MARK_X);
+                                if (BoardPanel.getInstance().validateMainBoard(anyBoard.getPosition(), BoardMarks.MARK_X)) {
+                                    bb.setMark(BoardMarks.MARK_EMPTY);
+                                    playerWinsGame = true;
+                                    break;
+                                }
+                            }
+                            bb.setMark(BoardMarks.MARK_EMPTY);
+                        }
+
+                        // Revert setting the mark
+                        anyBoard.setMark(BoardMarks.MARK_EMPTY);
+
+                        if(playerWinsGame) {
+                            break;
+                        }
+                    }
                 } else {
                     moveScore += AIWeightChoice.PLAYER_NO_MOVE_ANYWHERE.getValue();
 
-                    boolean playerWinsBoard = false;
                     for (BoardButton buttonForPlayer : nextBoard.getUnmarkedButtons()) {
                         buttonForPlayer.setMark(BoardMarks.MARK_X);
                         if (nextBoard.validateBoard(buttonForPlayer.getPosition(), BoardMarks.MARK_X)) {
                             playerWinsBoard = true;
-                            buttonForPlayer.setMark(BoardMarks.MARK_EMPTY);
-                            break;
-                        } else {
-                            buttonForPlayer.setMark(BoardMarks.MARK_EMPTY);
-                        }
-                    }
 
-                    if(playerWinsBoard)
-                        moveScore += AIWeightChoice.PLAYER_WIN.getValue();
-                    else
-                        moveScore += AIWeightChoice.PLAYER_NO_WIN.getValue();
+                            nextBoard.setMark(BoardMarks.MARK_X);
+                            if (BoardPanel.getInstance().validateMainBoard(nextBoard.getPosition(), BoardMarks.MARK_X)) {
+                                playerWinsGame = true;
+                                nextBoard.setMark(BoardMarks.MARK_EMPTY);
+                                buttonForPlayer.setMark(BoardMarks.MARK_EMPTY);
+                                break;
+                            }
+                            nextBoard.setMark(BoardMarks.MARK_EMPTY);
+                        }
+                        buttonForPlayer.setMark(BoardMarks.MARK_EMPTY);
+                    }
+                }
+
+                // Adding scores based on if player won board or game etc.
+                if(playerWinsBoard)
+                    moveScore += AIWeightChoice.PLAYER_WIN.getValue();
+                else
+                    moveScore += AIWeightChoice.PLAYER_NO_WIN.getValue();
+
+                if(playerWinsGame) {
+                    moveScore += AIWeightChoice.PLAYER_WIN_GAME.getValue();
                 }
 
                 evaluatedMoves.add(new EvaluatedMove<>(button, moveScore));
