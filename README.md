@@ -1,3 +1,6 @@
+## ***Information***
+This project was made as a part of learning process/curriculum of [PJATK](https://pja.edu.pl) University, fully developed by me.
+
 ## ***DESCRIPTION*** [Source: Wikipedia Site](https://en.wikipedia.org/wiki/Ultimate_tic-tac-toe)
 
 Ultimate tic-tac-toe (also known as super tic-tac-toe, meta tic-tac-toe or (tic-tac-toe)²[1]) is a board game composed of nine tic-tac-toe boards arranged in a 3 × 3 grid.[2][3] Players take turns playing on the smaller tic-tac-toe boards until one of them wins on the larger board. Compared to traditional tic-tac-toe, strategy in this game is conceptually more difficult and has proven more challenging for computers.
